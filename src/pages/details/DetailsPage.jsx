@@ -39,16 +39,15 @@ const DetailsPage = () => {
                   key={item}
                   onClick={() => handleSelectColor(item)}
                   className={`group rounded-lg flex gap-2 items-center p-2 border-2 ${
-                    selectedColor && "border-primary"
+                    selectedColor === item && "border-primaryColor"
                   }`}
                 >
                   <input
                     type="radio"
                     name="radio"
-                    checked={item === selectedColor}
                     id={item}
                   />
-                  <div
+                  <span
                     className={`w-6 h-6 rounded-lg ${
                       item === "Black"
                         ? "bg-black"
@@ -56,7 +55,7 @@ const DetailsPage = () => {
                           ? "bg-blue-600"
                           : "bg-red-600"
                     }`}
-                  ></div>
+                  ></span>
                 </div>
               ))}
             </div>

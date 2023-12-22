@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import Slider from 'react-slider';
+import { useState } from "react";
+import Slider from "react-slider";
 
 const PriceRangeFilter = ({ onChange }) => {
   const [priceRange, setPriceRange] = useState([0, 200000]);
@@ -21,9 +21,13 @@ const PriceRangeFilter = ({ onChange }) => {
         className="w-full"
       />
       <div className="flex space-x-5 mt-5">
-        <span className='p-2 border-2 border-gray-800 px-3 rounded text-xl'>{priceRange[0]}</span>
+        <span className="p-2 border-2 border-gray-800 px-3 rounded text-xl">
+          {priceRange[0]}
+        </span>
         <span>-</span>
-        <span className='p-2 border-2 border-gray-800 px-3 rounded text-xl'>{priceRange[1]}</span>
+        <span className="p-2 border-2 border-gray-800 px-3 rounded text-xl">
+          {priceRange[1]}
+        </span>
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import { useState } from "react";
 const FormSearch = () => {
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
-console.log(value);
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(setSearchTerm(value));

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiUser, FiGift, FiMinus } from "react-icons/fi";
 import { FcFlashOn } from "react-icons/fc";
@@ -7,8 +7,6 @@ import { BiSolidMessageAltAdd } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import { GiBeachBag } from "react-icons/gi";
 import FormSearch from "./FormSearch";
-import { AuthContext } from "../context/AuthProvider";
-import { getInitials } from "../utils/getInitials";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdClose } from "react-icons/io";
 import { GoArrowRight, GoPlus } from "react-icons/go";
@@ -18,28 +16,29 @@ import {
   removeFromCart,
   removeOne,
 } from "../redux/features/cartSlice";
+import { getUserInfo, removeUserInfo } from "../service/auth.service";
+import { getInitials } from "../utils/getInitials";
+import { authKey } from "../constants/storageKey";
 
 const Header = () => {
+  const [user, setUser] = useState(getUserInfo());
   const [isOpen, setIsOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { user, logOut } = useContext(AuthContext);
   const products = useSelector((state) => state.cart.products);
   const total = useSelector((state) => state.cart.total);
   const dispatch = useDispatch();
+  const name = getInitials(user?.userName);
   const handleToggle = () => {
     setIsOpen((previous) => !previous);
   };
-
-  const handleLogout = () => {
-    logOut()
-      .then(() => {})
-      .catch((err) => console.log(err));
-  };
-
-  const name = getInitials(user?.displayName);
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+  const handleLogout = () => {
+    removeUserInfo(authKey);
+    setUser(null)
+  };
+
   return (
     <div className="bg-[#2C95C0] py-3">
       {/* main content */}
@@ -96,16 +95,16 @@ const Header = () => {
             </Link>
             <div className="group relative overflow-visible">
               <Link
-                to={user?.uid ? "#" : "/sign-in"}
+                to={user?.id ? "#" : "/sign-in"}
                 className="relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow hover:ring-1 hover:ring-purple-500"
               >
-                {user?.uid ? (
+                {user?.id ? (
                   <span className="text-white font-bold text-lg">{name}</span>
                 ) : (
                   <FiUser className="w-6 h-6 text-white" />
                 )}
               </Link>
-              {user?.uid && (
+              {user?.id && (
                 <span
                   onClick={handleLogout}
                   className="opacity-0 absolute -bottom-10 bg-error-300 -right-4 group-hover:opacity-100 cursor-pointer py-2 px-5 rounded-full"
@@ -184,7 +183,7 @@ const Header = () => {
                         </h2>
                         <p className="text-orange font-bold">{mobile.price}৳</p>
                       </div>
-                      <div className="flex items-center pr-3 md:pr-10">
+                      <div className="flex items-center pr-3 md:pr-5">
                         <span
                           onClick={() => {
                             if (mobile.quantity > 1) {

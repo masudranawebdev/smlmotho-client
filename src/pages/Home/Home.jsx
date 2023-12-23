@@ -1,5 +1,5 @@
 import { useAllMobilesQuery, useMobilesQuery } from "../../redux/api/mobileApi";
-import { IoCartOutline, IoFilterOutline } from "react-icons/io5";
+import { IoFilterOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import {
@@ -12,14 +12,14 @@ import {
 } from "../../utils/uniqueArr";
 import { useState } from "react";
 import { useDebounced } from "../../redux/hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ProductNotFound from "../../components/product-not-found/ProductNotFound";
 import Loader from "../../components/loader/Loader";
 import PriceRangeFilter from "../../components/priceRange/PriceRangeFilter";
-import { addToCart } from "../../redux/features/cartSlice";
-import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { colors } from "../../utils/color";
+import { numberWithCommas } from "../../utils/numberWithCommas";
+import FormSearch from "../../shared/FormSearch";
 const Home = () => {
   const searchTerm = useSelector((state) => state.search.searchTerm);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
@@ -33,7 +33,6 @@ const Home = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(200000);
-  const dispatch = useDispatch();
   const query = {};
   query["status"] = selectedStatuses;
   query["size"] = selectedSizes;
@@ -169,17 +168,27 @@ const Home = () => {
         {/* color */}
         <div className="bg-[#F5F5F5] p-4 rounded-sm">
           <h3 className="text-xl font-semibold">Color</h3>
-          <div className="mt-3">
+          <div className="mt-3 space-y-[2px]">
             {colors?.map((color) => (
               <div key={color.label} className="flex gap-x-1">
                 <input
                   value={color.value}
                   type="checkbox"
-                  className="text-xl"
+                  className="text-xl cursor-pointer"
                   checked={selectedColors.includes(color.value)}
                   onChange={() => handleCheckboxColorChange(color.value)}
                 />
-                <span>{color.label}</span>
+                <span
+                  className={`inline-block w-[60px] text-center text-white rounded ${
+                    color.label === "Black"
+                      ? "bg-black"
+                      : color.label === "Blue"
+                        ? "bg-blue-600"
+                        : "bg-red-600"
+                  }`}
+                >
+                  {color.label}
+                </span>
               </div>
             ))}
           </div>
@@ -265,8 +274,13 @@ const Home = () => {
         >
           <IoMdClose className="p-1 bg-blue-gray-50 shadow rounded-full" />
         </button>
+        {/* search bar */}
+        <div className="px-3 pt-20 bg-[#F5F5F5]">
+          <FormSearch />
+        </div>
         {/* price range */}
         <PriceRangeFilter onChange={handlePriceChange} />
+
         {/* status */}
         <div className="bg-[#F5F5F5] p-4 rounded-sm">
           <h3 className="text-xl font-semibold">Availability</h3>
@@ -306,7 +320,7 @@ const Home = () => {
         {/* color */}
         <div className="bg-[#F5F5F5] p-4 rounded-sm">
           <h3 className="text-xl font-semibold">Color</h3>
-          <div className="mt-3">
+          <div className="mt-3 space-y-[2px]">
             {colors?.map((color) => (
               <div key={color.label} className="flex gap-x-1">
                 <input
@@ -316,7 +330,17 @@ const Home = () => {
                   checked={selectedColors.includes(color.value)}
                   onChange={() => handleCheckboxColorChange(color.value)}
                 />
-                <span>{color.label}</span>
+                <span
+                  className={`inline-block w-[60px] text-center text-white rounded ${
+                    color.label === "Black"
+                      ? "bg-black"
+                      : color.label === "Blue"
+                        ? "bg-blue-600"
+                        : "bg-red-600"
+                  }`}
+                >
+                  {color.label}
+                </span>
               </div>
             ))}
           </div>
@@ -425,20 +449,14 @@ const Home = () => {
             {data?.mobiles?.data?.length > 0 ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
                 {data?.mobiles?.data?.map((mobile) => (
-                  <div className="border shadow-md rounded pb-3" key={mobile.id}>
+                  <div
+                    className="border shadow-md rounded pb-3"
+                    key={mobile.id}
+                  >
                     <div className="overflow-hidden group">
                       <img src={mobile?.thumbnail} alt={mobile?.title} />
-                      <div className="translate-y-11 group-hover:translate-y-0 transition-all duration-500">
+                      <div className="md:translate-y-11 translate-y-0 md:group-hover:translate-y-0 transition-all duration-500">
                         <div className="w-full h-full flex justify-center bg-white mx-auto">
-                          <button
-                            onClick={() => {
-                              toast.success("Add to Cart Successful");
-                              dispatch(addToCart(mobile));
-                            }}
-                            className="text-black bg-white px-4 py-2 border hover:border-orange"
-                          >
-                            <IoCartOutline className="w-6 h-6" />
-                          </button>
                           <Link to={`/${mobile._id}`}>
                             <button className="text-black bg-white px-4 py-2 border hover:border-orange">
                               <FaRegEye className="w-6 h-6" />
@@ -452,16 +470,32 @@ const Home = () => {
                         {mobile.title}
                       </h2>
                       <p className="space-x-1">
-                        {
-                          mobile?.color?.map(item => <span className={`inline-block px-4 border rounded-full text-white ${item === "Black" ? "bg-black" : item === "Blue" ? "bg-blue-600" : "bg-red-600"}`} key={item}>{item}</span>)
-                        }
+                        {mobile?.color?.map((item) => (
+                          <span
+                            className={`inline-block px-4 border rounded-full text-white ${
+                              item === "Black"
+                                ? "bg-black"
+                                : item === "Blue"
+                                  ? "bg-blue-600"
+                                  : "bg-red-600"
+                            }`}
+                            key={item}
+                          >
+                            {item}
+                          </span>
+                        ))}
                       </p>
-          
+
                       <p className="py-2">
                         <strong>Brand: </strong>
                         <span>{mobile.brand}</span>
                       </p>
-                      <p className="text-orange font-bold">{(mobile.status === "out-stock" || mobile.status === "comming") ? "TBA" : mobile.price + "৳"}</p>
+                      <p className="text-orange font-bold">
+                        {mobile.status === "out-stock" ||
+                        mobile.status === "comming"
+                          ? "TBA"
+                          : numberWithCommas(mobile.price) + "৳"}
+                      </p>
                     </div>
                   </div>
                 ))}

@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { setSearchTerm } from "../redux/features/searchSlice";
 import { useState } from "react";
+import { IoSearchOutline } from "react-icons/io5";
 
 const FormSearch = () => {
   const [value, setValue] = useState("");
@@ -11,13 +12,13 @@ const FormSearch = () => {
   };
   return (
     <>
-      <form onSubmit={handleSubmit} className="flex-1 border border-green-500 flex justify-between font-sans rounded-lg">
+      <form onSubmit={handleSubmit} className="border border-green-500 flex justify-between font-sans rounded-lg">
         <input
+          id="search"
           type="text"
           name="search"
-          id="search"
           placeholder="Search by title"
-          className="px-5 py-2 grow focus:outline-none rounded-l-lg text-black"
+          className="w-full px-5 py-2 focus:outline-none rounded-l-lg text-black"
           value={value}
           onChange={(e)=> setValue(e.target.value)}
         />
@@ -25,7 +26,7 @@ const FormSearch = () => {
           className="bg-secondary px-5 text-white rounded-r-lg"
           type="submit"
         >
-          search now
+          <IoSearchOutline />
         </button>
       </form>
     </>

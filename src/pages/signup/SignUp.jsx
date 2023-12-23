@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import { useUserSignupMutation } from "../../redux/api/userApi";
 
 const SignUp = () => {
-  const [signUpError, setSignUpError] = useState("");
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -98,7 +97,6 @@ const SignUp = () => {
             value={loading || isLoading ? "Loading..." : "signup"}
             type="submit"
           />
-          {signUpError && <p className="text-red-600">{signUpError}</p>}
         </form>
         <p className="text-[14px] mt-4">
           Already have a account?

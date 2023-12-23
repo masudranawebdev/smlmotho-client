@@ -172,8 +172,8 @@ const Footer = () => {
         </div>
 
         {/* footer bottom */}
-        <div className="border-t mt-5 border-bgray-900 flex flex-col md:flex-row justify-between items-center py-5">
-          <p className="text-[16px] leading-7 font-[400]">
+        <div className="border-t mt-5 border-bgray-900 flex flex-col md:flex-row justify-between items-center pt-5 md:pb-16 lg:pb-5 gap-3">
+          <p className="text-[16px] text-center md:text-left leading-7 font-[400]">
             copyright @ {year} developed by
             <strong>
               <a
@@ -181,12 +181,12 @@ const Footer = () => {
                 target="_blank"
                 className="text-[#0861F2] hover:underline hover:decoration-primaryColor"
               >
-                <span> MRTECH</span>
+                <span> MRTECHGIANT</span>
               </a>
             </strong>{" "}
             || All right reserved
           </p>
-          <nav className="flex gap-x-1">
+          <nav className="flex gap-x-1 pb-16 md:pb-0">
             <a
               href="http://www.facebook.com/masudranawebdev"
               target="_blank"

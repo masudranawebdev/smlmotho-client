@@ -5,18 +5,20 @@ import localstorageMiddleware from "./localstorageMiddleware";
 
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('carts');
-    if (serializedState === null) {
+    const serializedCart = localStorage.getItem("cart");
+    if (serializedCart === null) {
       return undefined;
     }
-    return JSON.parse(serializedState);
+    return JSON.parse(serializedCart);
   } catch (error) {
     return undefined;
   }
 };
+const preloadedState = loadState();
+
 export const store = configureStore({
   reducer,
-  preloadedState: loadState(),
+  preloadedState,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware, localstorageMiddleware),
 });

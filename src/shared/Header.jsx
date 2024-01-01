@@ -26,6 +26,7 @@ const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const products = useSelector((state) => state.cart.products);
   const total = useSelector((state) => state.cart.total);
+  
   const dispatch = useDispatch();
   const name = getInitials(user?.userName);
   const handleToggle = () => {
@@ -38,7 +39,7 @@ const Header = () => {
     removeUserInfo(authKey);
     setUser(null);
   };
-
+  
   return (
     <div className="bg-[#2C95C0] py-3">
       {/* main content */}

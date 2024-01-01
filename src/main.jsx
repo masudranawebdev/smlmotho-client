@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <HelmetProvider>
       <Provider store={store}>
         <ErrorBoundary FallbackComponent={ErrorComponent}>
-            <App />
+          <App />
         </ErrorBoundary>
       </Provider>
     </HelmetProvider>

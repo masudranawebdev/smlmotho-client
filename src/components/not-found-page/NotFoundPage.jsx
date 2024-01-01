@@ -272,7 +272,7 @@ const NotFoundPage = () => {
             href="/"
             className="btn hover:border-primaryColor hover:border"
           >
-            Go Home
+            Go-Home
           </a>
         </div>
       </div>
